@@ -91,7 +91,11 @@ class Validation(Callback):
             intersection = np.maximum(diff_width, 0) * np.maximum(diff_height, 0)
 
             area_gt = gt[:,1] * gt[:,3]
-            area_pred = pred[:,1] * pred[:,3]
+
+import csv
+import math
+
+from PIL import Image            area_pred = pred[:,1] * pred[:,3]
             union = np.maximum(area_gt + area_pred - intersection, 0)
 
             intersections += np.sum(intersection * (union > 0))
@@ -130,7 +134,7 @@ def log_mse(y_true, y_pred):
     return tf.reduce_mean(tf.log1p(tf.squared_difference(y_pred, y_true)), axis=-1)
 
 def main():
-    model=load_model('/home/sounak/FlipkartGRIDNew/model-0.87_Final.h5', custom_objects={'log_mse':log_mse})
+    model=create_model()
 
     train_datagen = DataGenerator(TRAIN_CSV)
     validation_datagen = Validation(generator=DataGenerator(VALIDATION_CSV))
