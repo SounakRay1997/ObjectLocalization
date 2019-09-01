@@ -91,11 +91,7 @@ class Validation(Callback):
             intersection = np.maximum(diff_width, 0) * np.maximum(diff_height, 0)
 
             area_gt = gt[:,1] * gt[:,3]
-
-import csv
-import math
-
-from PIL import Image            area_pred = pred[:,1] * pred[:,3]
+            area_pred = pred[:,1] * pred[:,3]
             union = np.maximum(area_gt + area_pred - intersection, 0)
 
             intersections += np.sum(intersection * (union > 0))
