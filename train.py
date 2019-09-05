@@ -125,6 +125,38 @@ def create_model():
     x = Reshape((4,), name="coords")(x)
     return Model(inputs=img_input, outputs=x)
 
+def create_model_1():
+    img_input = Input((224, 224, 3))
+    x = Conv2D(16, kernel_size=(2, 2), strides=(2, 2))(img_input)
+    x = Activation('relu')(x)
+    x = MaxPooling2D((4, 4), strides=(2, 2))(x)
+    x = Conv2D(32, kernel_size=(3, 3), strides=(2, 2))(x)
+    x = Activation('relu')(x)
+    x = MaxPooling2D((3, 3), strides=(2, 2))(x)
+    x = Conv2D(64, kernel_size=(3, 3), strides=(2, 2))(x)
+    x = Activation('relu')(x)
+    x = MaxPooling2D((2, 2), strides=(2, 2))(x)
+    x = Conv2D(4, kernel_size=(3, 3))(x)
+    x = Reshape((4,), name="coords")(x)
+    return Model(inputs=img_input, outputs=x)
+
+def create_model_2():
+    img_input = Input((224, 224, 3))
+    x1 = Conv2D(4, kernel_size=(2, 2), strides=(2, 2), activation='relu')(img_input)
+    x2 = Conv2D(8, kernel_size=(2, 2), strides=(2, 2), activation='relu')(img_input)
+    x3 = Conv2D(16, kernel_size=(2, 2), strides=(2, 2), activation='relu')(img_input)
+    x = concatenate([x1,x2,x3], axis=3)
+    x = MaxPooling2D((4, 4), strides=(2, 2))(x)
+    x = Conv2D(32, kernel_size=(3, 3), strides=(2, 2))(x)
+    x = Activation('relu')(x)
+    x = MaxPooling2D((3, 3), strides=(2, 2))(x)
+    x = Conv2D(64, kernel_size=(3, 3), strides=(2, 2))(x)
+    x = Activation('relu')(x)
+    x = MaxPooling2D((2, 2), strides=(2, 2))(x)
+    x = Conv2D(4, kernel_size=(3, 3))(x)
+    x = Reshape((4,), name="coords")(x)
+    return Model(inputs=img_input, outputs=x)
+
 
 def log_mse(y_true, y_pred):
     return tf.reduce_mean(tf.log1p(tf.squared_difference(y_pred, y_true)), axis=-1)
